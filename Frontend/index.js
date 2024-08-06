@@ -1,6 +1,6 @@
+//todo: handle book registration
 async function handleRegistration(event) {
   event.preventDefault();
-  // console.log(event.target.name.value)
   const name = event.target.name.value;
   const times = formatDateTime();
   const data = {
@@ -17,59 +17,61 @@ async function handleRegistration(event) {
   }
 }
 
+//todo: Collect all resituated books and display
 async function fetchBooks() {
   try {
     const response = await axios.get("http://localhost:3000/api/book");
-    // console.log(response.data)
     const books = response.data;
     const cards = document.getElementById("books");
     let html = "";
     books.forEach((book) => {
       html += `
-            <div class="card" id="cart_${book.id}">
-                <h4>Book Name: ${book.name}</h4>
-                <p>Taken: ${book.taken}</p>
-                <p>Return: ${book.return}</p> 
-                <p>Current fine: ${
-                  calculateHoursPassed(book.return) * 10
-                } rs</p>
-                <button onclick="returnBook(${book.id})">Return book</button>
-            </div>
-            `;
-    });
-
-    cards.innerHTML = html;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-async function returnBook(id) {
-  try {
-    const response = await axios.get(`http://localhost:3000/api/book/${id}`);
-    const book = response.data;
-
-    const hours = calculateHoursPassed(book.return);
-    const fine = hours * 10;
-    const data = {
-      name: book.name,
-      amount: fine,
-      date: formatDateTime()[0],
-    };
-
-    if (fine > 0) {
-      payFine(data, id);
-    } else {
-      submitBook(data, book.id);
+      <div class="card" id="cart_${book.id}">
+      <h4>Book Name: ${book.name}</h4>
+      <p>Taken: ${book.taken}</p>
+      <p>Return: ${book.return}</p> 
+      <p>Current fine: ${
+        calculateHoursPassed(book.return) * 10
+        } rs</p>
+        <button onclick="returnBook(${book.id})">Return book</button>
+        </div>
+        `;
+      });
+      
+      cards.innerHTML = html;
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
   }
-}
-
-async function payFine(data, id) {
-  const card = document.getElementById(`cart_${id}`);
-  card.innerHTML = `
+  
+  //todo: return a book and update display
+  async function returnBook(id) {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/book/${id}`);
+      const book = response.data;
+      
+      const hours = calculateHoursPassed(book.return);
+      const fine = hours * 10;
+      const data = {
+        name: book.name,
+        amount: fine,
+        date: formatDateTime()[0],
+      };
+      
+      if (fine > 0) {
+        payFine(data, id);
+      } else {
+        submitBook(data, book.id);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
+  //todo: pay before returning a book and display pay form 
+  async function payFine(data, id) {
+    const card = document.getElementById(`cart_${id}`);
+    card.innerHTML = `
   <div class="cardForm">
     <form onsubmit="handleSubmitBook(event)" method="get">
         <input type="text" name="id" value="${id}" hidden/>
@@ -82,6 +84,7 @@ async function payFine(data, id) {
     `;
 }
 
+//todo: handle pay form submission and pase to the book submission
 async function handleSubmitBook(event) {
   event.preventDefault();
   const [id, amount, name, date] = event.target
@@ -93,8 +96,9 @@ async function handleSubmitBook(event) {
   await submitBook(data, id.value);
 }
 
+//todo: Handle book submission. Pass id to deleteBook
 async function submitBook(data, id) {
-
+  
   const response = await axios.post(
     `http://localhost:3000/api/submitted`,
     data
@@ -102,12 +106,14 @@ async function submitBook(data, id) {
   deleteBook(id);
 }
 
+//todo: Handle delete book and update books and record list on display
 async function deleteBook(id) {
   const response = await axios.delete(`http://localhost:3000/api/book/${id}`);
   fetchBooks();
   fetchSubmittedBooks();
 }
 
+//todo: Fetch record
 async function fetchSubmittedBooks() {
   const response = await axios.get(`http://localhost:3000/api/submitted`);
   const books = response.data;
@@ -126,11 +132,13 @@ async function fetchSubmittedBooks() {
   cards.innerHTML = html;
 }
 
+//todo: Initialize the app on page load and fetch books and record list on display
 document.addEventListener("DOMContentLoaded", () => {
   fetchBooks();
   fetchSubmittedBooks();
 });
 
+// todo: get current and 1 hour latter timestamps
 function formatDateTime() {
   const date = new Date();
   // Extract date components
@@ -157,7 +165,7 @@ function formatDateTime() {
   const expireTime = `${formattedDate}, ${formattedTime1hour}`;
   return [createTime, expireTime];
 }
-
+// todo: Calculate hours passed from the return date
 function calculateHoursPassed(dateTimeStr) {
   // Parse the date string
   const [datePart, timePart] = dateTimeStr.split(", ");
