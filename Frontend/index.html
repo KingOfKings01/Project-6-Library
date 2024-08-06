@@ -4,23 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            background: #454545;
+            padding: 20px;
+            margin: 5vh 0;
+        }
+        #books{
+            display: flex;
+            flex-wrap: wrap;
+            .card{
+                margin: 10px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            }
+        }
+
+        #record{
+            background: #2f2f2f;
+            div{
+                margin-top: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <form onsubmit="handleRegistration(event)" method="post">
-        <input type="text" name="name" placeholder="Please enter Book name">
-        <button type="submit">Submit</button>
+    <div class="container">
+
+        <form onsubmit="handleRegistration(event)" method="post">
+            <input type="text" name="name" placeholder="Please enter Book name">
+            <button type="submit">Submit</button>
     </form>
 
     <div id="books">
 
     </div>
-
+    
     <h2>Returned Books</h2>
     <div id="record">
-
+        
     </div>
 
     <script src="index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</div>
 </body>
 </html>
