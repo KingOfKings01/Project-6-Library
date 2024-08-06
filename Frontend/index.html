@@ -54,6 +54,21 @@
               border: 1px solid #ccc;
               border-radius: 5px;
               box-shadow: 0 0 5px rgba(0, 0, 0, 0.142);
+
+              .cardForm{
+                form{
+                  display: flex;
+                  flex-direction: column;
+                  input{
+                    width: 100%;
+                    color: #f5f5f5;
+                  }
+                  button{
+                    padding: 10px 0;
+                  }
+                }
+              }
+
               p {
                 margin-top: 10px;
               }
@@ -96,7 +111,7 @@
   <body>
     <div class="container">
       <h2 class="title">Books</h2>
-      <form onsubmit="handleRegistration(event)" method="post">
+      <form onsubmit="handleRegistration(event)" method="post" id="myForm">
         <input type="text" name="name" placeholder="Please enter Book name" />
         <button type="submit">Submit</button>
       </form>

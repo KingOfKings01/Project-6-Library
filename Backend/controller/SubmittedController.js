@@ -1,7 +1,7 @@
 const Submitted = require("../models/Submitted");
 
 exports.createSubmitted = async (req, res) => {
-  console.log("first request")
+  console.log("first request", req.body)
   try {
     await Submitted.create(req.body)
     res.status(201).json(Submitted);
