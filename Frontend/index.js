@@ -10,7 +10,7 @@ async function handleRegistration(event) {
   };
   try {
     const response = await axios.post("http://localhost:3000/api/book", data);
-    console.log(response.data);
+    fetchBooks()
   } catch (err) {
     console.log(err);
   }
@@ -71,8 +71,9 @@ async function submitBook(data, id) {
 }
 
 async function deleteBook(id) {
-  const response = await axios.get(`http://localhost:3000/api/book/${id}`);
+  const response = await axios.delete(`http://localhost:3000/api/book/${id}`);
   fetchBooks();
+  fetchSubmittedBooks()
 }
 
 async function fetchSubmittedBooks() {
