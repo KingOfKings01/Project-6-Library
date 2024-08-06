@@ -26,7 +26,7 @@ async function fetchBooks() {
     books.forEach((book) => {
       html += `
             <div class="card">
-                <h2>${book.name}</h2>
+                <h4>Book Name: ${book.name}</h4>
                 <p>Taken: ${book.taken}</p>
                 <p>Return: ${book.return}</p> 
                 <p>Current fine: ${calculateHoursPassed(book.return) * 10}</p>
@@ -88,6 +88,7 @@ async function fetchSubmittedBooks() {
                 <p>Fine: ${book.amount}</p>
                 <p>Returned On: ${book.date}</p>
             </div>
+            <hr>
             `;
     });
     cards.innerHTML = html;
